@@ -1,0 +1,7 @@
+-- 코드를 입력하세요
+# 2021년에 가입한 회원 중 나이가 20세 이상 29세 이하인 회원이 몇 명
+SELECT COUNT(USER_ID)
+FROM USER_INFO 
+WHERE YEAR(JOINED)='2021'
+-- WHERE DATE_FORMAT(JOINED, '%Y')='2021'
+AND AGE BETWEEN 20 AND 29;
