@@ -6,3 +6,29 @@ IN (
     FROM Activity
     GROUP BY player_id
 )
+
+-- 복습 풀이
+SELECT ROUND(
+    COUNT(DISTINCT player_id) /
+    (SELECT COUNT(DISTINCT player_id) FROM Activity)
+,2) AS fraction
+FROM Activity
+WHERE (player_id,event_date)
+IN (
+    SELECT player_id,DATE_ADD(MIN(event_date),INTERVAL 1 DAY)
+    FROM Activity
+    GROUP BY player_id
+);
+
+-- PARTITION BY 풀이
+SELECT 
+ROUND(COUNT(DISTINCT PLAYER_ID)/(SELECT COUNT(DISTINCT PLAYER_ID) FROM ACTIVITY),2)
+FRACTION
+FROM
+(
+    SELECT *,
+    MIN(EVENT_DATE) OVER (PARTITION BY PLAYER_ID) AS FIRST_DATE
+    FROM ACTIVITY
+) DT
+WHERE EVENT_DATE=DATE_ADD(FIRST_DATE,INTERVAL 1 DAY)
+
