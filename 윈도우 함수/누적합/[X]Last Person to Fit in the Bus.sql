@@ -1,0 +1,26 @@
+WITH cte AS
+(
+    SELECT *,SUM(weight) OVER (ORDER BY turn) AS total -- 누적합
+    FROM Queue
+    ORDER BY turn
+) 
+
+SELECT person_name
+FROM cte
+WHERE total<=1000
+ORDER BY total DESC
+LIMIT 1
+
+-- 복습 풀이
+WITH CTE AS
+(
+    SELECT *,SUM(WEIGHT) OVER (ORDER BY TURN) AS TOTAL
+    FROM QUEUE
+    ORDER BY TURN
+)
+
+SELECT PERSON_NAME
+FROM CTE
+WHERE TOTAL<=1000
+ORDER BY TOTAL DESC
+LIMIT 1
