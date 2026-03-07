@@ -1,0 +1,23 @@
+SELECT A.user_id,ROUND(AVG(IF(action='confirmed',1,0)),2) AS confirmation_rate 
+FROM Signups A
+LEFT JOIN Confirmations B ON A.user_id=B.user_id
+GROUP BY A.user_id
+
+-- 복습 풀이
+WITH CTE AS
+(
+    SELECT A.USER_ID,
+    CASE
+    WHEN ACTION='timeout' THEN 0
+    WHEN ACTION='confirmed' THEN 1
+    ELSE 0
+    END ACTION 
+    FROM SIGNUPS A
+    LEFT JOIN CONFIRMATIONS B
+    ON A.USER_ID=B.USER_ID
+)
+
+SELECT USER_ID,
+ROUND(SUM(ACTION)/COUNT(USER_ID),2) AS CONFIRMATION_RATE
+FROM CTE
+GROUP BY USER_ID
